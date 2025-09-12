@@ -1,0 +1,18 @@
+from sqlalchemy import Column, Integer, String, Enum, JSON, TIMESTAMP
+from sqlalchemy.sql import func
+from db.base import Base
+import enum
+
+class Headquarter(enum.Enum):
+    bogota = "Bogotá"
+    medellin = "Medellín"
+
+class Room(Base):
+    __tablename__ = "rooms"
+
+    id = Column(Integer, primarr_key=True, index=True)
+    name = Column(String(50))
+    Headquarter = Column(Enum(Headquarter), nullable=False)
+    capacity = Column(Integer, nullable=False)
+    resources = Column(JSON, nullable=True) # e.g., {"projector": true, "whiteboard": false}
+    created_at = Column(TIMESTAMP, server_default=func.now(), nullable=False)
