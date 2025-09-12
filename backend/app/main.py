@@ -22,3 +22,4 @@ def ping_db(db: Session = Depends(get_db)):
         return {"status": "Database connection successful"}
     except Exception as e:
         return {"status": "Database connection failed", "error": str(e)}
+    
