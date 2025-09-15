@@ -1,11 +1,16 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import text
-from utils.dependencies import get_db
+from app.utils.dependencies import get_db
+from typing import Annotated
+from fastapi.security import OAuth2PasswordBearer
+from app.api.routes import auth
 
-from core.config import settings
+from app.core.config import settings
 
 app = FastAPI()
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 @app.get("/")
 def root():
@@ -22,4 +27,6 @@ def ping_db(db: Session = Depends(get_db)):
         return {"status": "Database connection successful"}
     except Exception as e:
         return {"status": "Database connection failed", "error": str(e)}
-    
+
+app.include_router(auth.router)
+

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Enum, JSON, TIMESTAMP
 from sqlalchemy.sql import func
-from db.base import Base
+from app.db.base import Base
 import enum
 
 class Headquarter(enum.Enum):
