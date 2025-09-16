@@ -1,33 +1,59 @@
+/* For security, avoid using root user for database connections in production */
+
+CREATE USER 'manager_user'@'localhost' IDENTIFIED BY 'reservManager#25'; /* Create a dedicated DB user */
+GRANT ALL PRIVILEGES ON reservation_manager.* TO 'manager_user'@'localhost'; /* Grant necessary privileges */
+FLUSH PRIVILEGES;# /* Apply changes */
+
+/* Database schema for Reservation Manager application */
+
+-- Create the database if it doesn't exist
+CREATE DATABASE IF NOT EXISTS reservation_manager;
+
+-- Switch to the database
 USE reservation_manager;
 
 -- =====================
--- Users
+-- Table: Users
 -- =====================
-INSERT INTO users (name, email, password_hash, role)
-VALUES 
-('Admin User', 'admin@cowork.com', '$2b$12$hashEjemplo', 'admin'),
-('Juan Pérez', 'juan.perez@example.com', '$2b$12$abcdehashEjemplo', 'user'),
-('María Gómez', 'maria.gomez@example.com', '$2b$12$zyxwvutzhashEjemplo', 'user');
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    role ENUM('user', 'admin') NOT NULL DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 -- =====================
--- Rooms
+-- Table: Rooms
 -- =====================
-INSERT INTO rooms (name, headquarter, capacity, resources)
-VALUES
-('Sala Innovación', 'Bogotá', 12, JSON_ARRAY('Proyector', 'Pizarra', 'Sonido')),
-('Sala Creativa', 'Bogotá', 8, JSON_ARRAY('Pizarra', 'TV')),
-('Sala Ejecutiva', 'Medellín', 20, JSON_ARRAY('Proyector', 'Videoconferencia', 'Sonido')),
-('Sala Startups', 'Medellín', 10, JSON_ARRAY('Pizarra', 'Proyector'));
+CREATE TABLE rooms (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    headquarter ENUM('Bogotá', 'Medellín') NOT NULL,
+    capacity INT NOT NULL CHECK (capacity > 0),
+    resources JSON NOT NULL, -- E.g., {"projector": true, "whiteboard": false}
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 -- =====================
--- Reservations
+-- Table: Reservations
 -- =====================
-INSERT INTO reservations (user_id, room_id, date, start_time, end_time, status)
-VALUES
--- Juan Pérez's Reservations
-(1, 1, '2025-09-12', '09:00:00', '10:00:00', 'confirmed'),
-(1, 2, '2025-09-13', '14:00:00', '15:00:00', 'pending'),
-
--- María Gómez's Reservations  
-(2, 3, '2025-09-14', '10:00:00', '11:00:00', 'confirmed'),
-(2, 3, '2025-09-15', '16:00:00', '17:00:00', 'canceled');
+CREATE TABLE reservations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    room_id INT NOT NULL,
+    date DATE NOT NULL,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL,
+    status ENUM('pending', 'confirmed', 'canceled') NOT NULL DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Relationships
+    CONSTRAINT fk_reservation_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_reservation_room FOREIGN KEY (room_id) REFERENCES rooms(id) ON DELETE CASCADE,
+    
+    -- Validation to ensure end_time is after start_time
+    CHECK (start_time < end_time)
+);

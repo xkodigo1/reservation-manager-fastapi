@@ -10,9 +10,9 @@ class Headquarter(enum.Enum):
 class Room(Base):
     __tablename__ = "rooms"
 
-    id = Column(Integer, primarr_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50))
-    Headquarter = Column(Enum(Headquarter), nullable=False)
+    headquarter = Column(Enum(Headquarter), nullable=False)
     capacity = Column(Integer, nullable=False)
     resources = Column(JSON, nullable=True) # e.g., {"projector": true, "whiteboard": false}
     created_at = Column(TIMESTAMP, server_default=func.now(), nullable=False)
