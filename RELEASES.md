@@ -12,3 +12,13 @@
 📦 Release v0.1.0
 • Initial project, server up and running and can connect to MySQL.
 • No useful endpoints yet.
+
+🎯 Release v0.2.0 → Auth & Users
+
+👉 Goal: Provide JWT authentication and basic CRUD for users.
+• feature/auth-routes → POST /auth/register, POST /auth/login.
+• feature/users-routes → GET /users/me, GET /users, DELETE /users/{id}.
+
+📦 Release v0.2.0
+• Users can register and log in with JWT.
+• Admin can list and delete users.
