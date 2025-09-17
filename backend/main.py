@@ -4,7 +4,7 @@ from sqlalchemy import text
 from app.utils.dependencies import get_db
 from typing import Annotated
 from fastapi.security import OAuth2PasswordBearer
-from app.api.routes.auth import auth
+from app.api.routes import auth
 from app.api.routes.users import userRoute
 from app.api.routes.rooms import roomRoute
 
