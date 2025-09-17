@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta, timezone
-from PyJWT import JWTError, jwt
+from jose import JWTError, jwt
 from app.core.config import settings
 
 SECRET_KEY = settings.jwt_secret_key
 ALGORITHM = settings.jwt_algorithm
-ACCESS_TOKEN_EXPIRE_MINUTES = settings.jwt_expiration_seconds
+ACCESS_TOKEN_EXPIRE_SECONDS = settings.jwt_expiration_seconds
 
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
