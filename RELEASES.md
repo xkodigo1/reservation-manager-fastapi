@@ -22,3 +22,11 @@
 📦 Release v0.2.0
 • Users can register and log in with JWT.
 • Admin can list and delete users.
+
+🎯 Version v0.3.0 → Rooms
+
+👉 Objective: Manage rooms with roles (admin).
+• feature/rooms-routes → GET /rooms, POST /rooms, PUT /rooms/{id}, DELETE /rooms/{id}.
+
+📦 Release v0.3.0
+• Rooms available with protected CRUD for admin.
