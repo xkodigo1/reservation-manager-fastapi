@@ -25,44 +25,6 @@ def get_users(db: Session = Depends(get_db)):
 def get_me(current_user=Depends(get_current_user)):
     return current_user
 
-@router.get("/{user_id}", response_model=UserOut, dependencies=[Depends(require_admin)])
-def get_user(user_id: int = Path(..., gt=0), db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.id == user_id).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    return user
-
-@router.post("/", response_model=UserOut, dependencies=[Depends(require_admin)])
-def create_user(user_in: UserCreate, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == user_in.email).first()
-    if user:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    user = User(
-        email=user_in.email,
-        first_name=user_in.first_name,
-        last_name=user_in.last_name,
-        password_hash=get_password_hash(user_in.password),
-        role=user_in.role
-    )
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    return user
-
-@router.put("/{user_id}", response_model=UserOut, dependencies=[Depends(require_admin)])
-def update_user(user_id: int, user_in: UserCreate, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.id == user_id).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    user.email = user_in.email
-    user.first_name = user_in.first_name
-    user.last_name = user_in.last_name
-    user.password_hash = get_password_hash(user_in.password)
-    user.role = user_in.role
-    db.commit()
-    db.refresh(user)
-    return user
-
 @router.delete("/{user_id}", status_code=204, dependencies=[Depends(require_admin)])
 def delete_user(user_id: int, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == user_id).first()

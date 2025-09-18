@@ -21,14 +21,6 @@ def list_rooms(db: Session = Depends(get_db)):
     return db.query(Room).all()
 
 
-@router.get("/{room_id}", response_model=RoomOut)
-def get_room(room_id: int = Path(..., gt=0), db: Session = Depends(get_db)):
-    room = db.query(Room).filter(Room.id == room_id).first()
-    if not room:
-        raise HTTPException(status_code=404, detail="Room not found")
-    return room
-
-
 @router.post("/", response_model=RoomOut, dependencies=[Depends(require_admin)])
 def create_room(room_in: RoomBase, db: Session = Depends(get_db)):
     room = Room(
