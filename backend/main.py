@@ -4,7 +4,7 @@ from sqlalchemy import text
 from app.utils.dependencies import get_db
 from typing import Annotated
 from fastapi.security import OAuth2PasswordBearer
-from app.api.routes import auth
+from app.api.routes.auth import authRoute
 from app.api.routes.users import userRoute
 from app.api.routes.rooms import roomRoute
 from app.api.routes.reservations import reservationRoute
@@ -15,7 +15,7 @@ app = FastAPI()
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
-app.include_router(auth.router)
+app.include_router(authRoute.router)
 app.include_router(userRoute.router)
 app.include_router(roomRoute.router)
 app.include_router(reservationRoute.router)
