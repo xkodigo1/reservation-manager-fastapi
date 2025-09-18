@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import date, time, datetime
+from enum import Enum
 
 class ReservationStatus(str, Enum):
     pending = "pending"
