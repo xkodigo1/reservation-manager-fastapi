@@ -4,8 +4,8 @@ from app.db.base import Base
 import enum
 
 class Headquarter(enum.Enum):
-    bogota = "Bogotá"
-    medellin = "Medellín"
+    Bogotá = "Bogotá"
+    Medellín = "Medellín"
 
 class Room(Base):
     __tablename__ = "rooms"

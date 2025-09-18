@@ -9,7 +9,7 @@ from app.utils.dependencies import get_db
 from app.models.users.userModel import User
 from app.schemas.auth import Token
 from app.core.config import settings
-from app.schemas.users.userSchema import UserCreate, UserOut
+from app.schemas.users.userSchema import UserCreate
 from app.core.security import get_password_hash
 from app.api.deps import get_current_user
 from fastapi import Path

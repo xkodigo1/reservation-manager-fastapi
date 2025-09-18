@@ -1,7 +1,8 @@
 from pydantic import BaseModel
 from datetime import date, time, datetime
+import enum
 
-class ReservationStatus(str, Enum):
+class ReservationStatus(str, enum.Enum):
     pending = "pending"
     confirmed = "confirmed"
     canceled = "canceled"
