@@ -7,7 +7,6 @@ from app.core.config import settings
 from app.schemas.users.userSchema import UserCreate, UserOut
 from app.core.security import get_password_hash
 from app.api.deps import get_current_user
-from fastapi import Path
 from app.models.users.userModel import UserRole
 
 router = APIRouter(prefix="/users", tags=["User"])
